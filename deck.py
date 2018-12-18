@@ -8,7 +8,17 @@ class Card:
   def __str__(self):
     return self.suit + self.value
 
-
+  def get_integer_value(self):
+    if self.value == "A":
+      return 14
+    elif self.value == "K":
+      return 13
+    elif self.value == "Q":
+      return 12
+    elif self.value == "J":
+      return 11
+    else:
+      return int(self.value)
 
 class Deck:
   suits = ['Clubs', 'Diamonds', 'Hearts', 'Spades']
