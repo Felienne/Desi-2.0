@@ -35,18 +35,26 @@ class Trick:
 
     if trump_cards == []:
       #determine the highest value
-      max_card_value = max([c.get_integer_value() for c in self.cards if c.suit == start_suit])
-
-      #get the corresponding card (indexing is safe, there can only be one)
-      highest_card = [c for c in self.cards if c.get_integer_value() == max_card_value and c.suit == start_suit][0]
+      highest_card = self.highest_card_in_suit(start_suit)
 
       #simply return the player number of the highest card
       owner_of_highest_card = self.cards.index(highest_card)
 
-    #TODO: take trump into account
+    else:
+      #if there are trumps, get the highest trump card
+      #determine the highest value
+      highest_card = self.highest_card_in_suit(self.trump)
+
+      #simply return the player number of the highest card
+      owner_of_highest_card = self.cards.index(highest_card)
 
     return owner_of_highest_card
 
+  def highest_card_in_suit(self, start_suit):
+    max_card_value = max([c.get_integer_value() for c in self.cards if c.suit == start_suit])
+    # get the corresponding card (indexing is safe, there can only be one)
+    highest_card = [c for c in self.cards if c.get_integer_value() == max_card_value and c.suit == start_suit][0]
+    return highest_card
 
 
 class Game:
@@ -79,7 +87,7 @@ class Game:
       # create a trick by letting each player create a cards
       cards_in_trick = [p.play_random_card() for p in self.players]
 
-      t = Trick(cards_in_trick, 'SA')
+      t = Trick(cards_in_trick, 'Clubs')
       winner = t.winner()
 
       print([str(c) for c in t.cards], winner)
