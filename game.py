@@ -56,27 +56,32 @@ class Player:
     self.name = n
     self.hand = h
 
+  # a bit overkill now, but will come in handu for MCTS
+  def legal_cards(self, t: Trick):
+    if t.cards == []:
+      # if you are the first player,everything is legal
+      legal_cards = self.hand
+    else: # filter cards based on start suit
+      cards_in_start_suit = cards_in_suit(self.hand, t.cards[0].suit)
+
+      if cards_in_start_suit == []:
+        legal_cards = self.hand
+      else:
+        legal_cards = cards_in_start_suit #if we can follow, we must!
+
+    return legal_cards
+
+
   def play_random_card(self):
     card = random.choice(self.hand)
     self.hand.remove(card)
     return card
 
   def play_based_on_trick(self, t: Trick):
-    if t.cards == []: #first player? play random!
-      return self.play_random_card()
-    else:
-      #filter cards based on start suit
-      cards_in_start_suit = cards_in_suit(self.hand, t.cards[0].suit)
-
-
-      if cards_in_start_suit == []:
-        return self.play_random_card() #no start suit? draw random!
-      else:
-        card = random.choice(cards_in_start_suit)
-        self.hand.remove(card)
-      return card
-
-
+    legal_cards = self.legal_cards(t)
+    card = random.choice(legal_cards)
+    self.hand.remove(card)
+    return card
 
 
 
