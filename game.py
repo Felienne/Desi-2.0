@@ -6,10 +6,9 @@ def cards_in_suit(cards, suit):
 
 
 def highest_card_in_suit(cards, suit):
-  max_card_value = max([c.get_integer_value() for c in cards if c.suit == suit])
-  #todo: regel hierboven kan ook cards_in_suit() gebruiken
+  max_card_value = max(c.get_integer_value() for c in cards_in_suit(cards,suit))
   # get the corresponding card (indexing is safe, there can only be one)
-  highest_card = [c for c in cards if c.get_integer_value() == max_card_value and c.suit == suit][0]
+  highest_card = [c for c in cards_in_suit(cards,suit) if c.get_integer_value() == max_card_value][0]
   return highest_card
 
 
