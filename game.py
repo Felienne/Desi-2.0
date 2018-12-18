@@ -50,6 +50,17 @@ class Trick:
 
 
 class Game:
+  def start_player_now(self, player_num):
+    # this method reorganizes the player list according to a winner
+    # given as integer
+
+    if player_num != 0:
+      # we don't have to change anything if the first player won the trick, they just remain first
+      start_part = self.players[player_num:] #we start at the player that gets tp start
+      remaining_part = self.players[:player_num] #we glue the rest at the end
+      self.players = start_part + remaining_part
+
+
   def __init__(self):
     self.deck = Deck()
     p1 = Player('AI-1', self.deck.cards[0:13])
@@ -61,14 +72,20 @@ class Game:
 
 
   def play_out(self):
-    #implemented this with a counter now, might be better with a boolean 'active'?
+    # implemented this with a counter now, might be better with a boolean 'active'?
     tricks_played = 0
+
     for i in range(13):
-      #create a trick by letting each player create a cards
+      # create a trick by letting each player create a cards
       cards_in_trick = [p.play_random_card() for p in self.players]
 
       t = Trick(cards_in_trick, 'SA')
-      print([str(c) for c in t.cards], t.winner())
+      winner = t.winner()
+
+      print([str(c) for c in t.cards], winner)
+
+      self.start_player_now(winner)
+      print([p.name for p in self.players])
 
       # for p in self.players:
       #   print(p.name, 'plays', p.play_random_card())
